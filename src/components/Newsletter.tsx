@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Check } from 'lucide-react';
 
-const WEBHOOK_URL = 'https://n8n.srv1271485.hstgr.cloud/webhook/get-email';
+const API_SEND_EMAIL = '/api/send-email';
 
 const Newsletter: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ const Newsletter: React.FC = () => {
         setError(null);
         setLoading(true);
         try {
-            const res = await fetch(WEBHOOK_URL, {
+            const res = await fetch(API_SEND_EMAIL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() }),
