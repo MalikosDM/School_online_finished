@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Terminal, Shield, Zap, Brain } from 'lucide-react';
+import { Terminal, Shield, Zap, Brain, Gift } from 'lucide-react';
 import MagicBentoCard from './MagicBentoCard';
 import './MagicBentoCard.css';
 
@@ -24,12 +24,17 @@ const Content: React.FC = () => {
             icon: <Brain className="w-6 h-6 text-matrix-green" />,
             title: "Les bases de l'IA",
             text: "Comprendre avec des schémas comment fonctionne une IA et ce qui se cache derrière ce terme."
+        },
+        {
+            icon: <Gift className="w-6 h-6 text-matrix-green" />,
+            title: "Bonus",
+            text: "Créer des vidéos qualitatives d'influenceurs IA réalistes : apprenez à piloter les outils que notre époque met à votre disposition."
         }
     ];
 
     return (
         <section className="py-24 px-4 bg-gradient-to-b from-transparent to-matrix-darkGreen/20">
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 items-stretch">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 items-stretch w-full">
                 {features.map((feature, index) => (
                     <motion.div
                         key={index}

@@ -2,16 +2,31 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Check } from 'lucide-react';
 
+const WEBHOOK_URL = 'https://n8n.srv1271485.hstgr.cloud/webhook/get-email';
+
 const Newsletter: React.FC = () => {
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email) {
+        if (!email) return;
+        setError(null);
+        setLoading(true);
+        try {
+            const res = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email.trim() }),
+            });
+            if (!res.ok) throw new Error('Erreur lors de l’envoi');
             setSubmitted(true);
-            // Here you would integrate with your email service
-            console.log('Email submitted:', email);
+        } catch {
+            setError('Un problème est survenu. Réessayez dans un instant.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -41,17 +56,24 @@ const Newsletter: React.FC = () => {
                             placeholder="votre@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="flex-1 bg-transparent border-b-2 border-matrix-text/30 focus:border-matrix-green outline-none py-3 px-2 font-mono text-lg transition-colors placeholder-matrix-text/30"
+                            disabled={loading}
+                            className="flex-1 bg-transparent border-b-2 border-matrix-text/30 focus:border-matrix-green outline-none py-3 px-2 font-mono text-lg transition-colors placeholder-matrix-text/30 disabled:opacity-60"
                             required
                         />
                         <button
                             type="submit"
-                            className="group bg-matrix-green/10 hover:bg-matrix-green/20 text-matrix-green border border-matrix-green/50 hover:border-matrix-green px-8 py-3 rounded uppercase font-bold tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
+                            disabled={loading}
+                            className="group bg-matrix-green/10 hover:bg-matrix-green/20 text-matrix-green border border-matrix-green/50 hover:border-matrix-green px-8 py-3 rounded uppercase font-bold tracking-wider transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            Réserver ma place
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            {loading ? 'Envoi…' : 'Réserver ma place'}
+                            {!loading && <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
                         </button>
                     </form>
+                )}
+                {!submitted && error && (
+                    <p className="mt-4 text-red-400 text-sm font-mono" role="alert">
+                        {error}
+                    </p>
                 )}
 
                 <p className="mt-8 text-xs text-matrix-text/40 font-mono">

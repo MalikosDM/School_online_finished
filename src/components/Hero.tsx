@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1, duration: 1 }}
-                    className="text-sm md:text-base text-matrix-text/70 max-w-lg mx-auto leading-relaxed tracking-widest uppercase"
+                    className="text-sm md:text-base text-matrix-text/70 max-w-lg mx-auto leading-relaxed tracking-widest uppercase whitespace-nowrap"
                 >
                     <DecryptedText
                         text="[ Système en cours de déploiement — Accès sur invitation ]"
