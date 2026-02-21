@@ -84,8 +84,9 @@ export default function DecryptedText({
   repeatInterval,
   stayRevealedMs = 0,
   scrambleDisplayMs = 600,
-  ...props
+  ..._rest
 }: DecryptedTextProps) {
+  void _rest;
   const [displayText, setDisplayText] = useState(text);
   const [isHovering, setIsHovering] = useState(false);
   const [isScrambling, setIsScrambling] = useState(false);
@@ -324,7 +325,6 @@ export default function DecryptedText({
       ref={containerRef}
       style={styles.wrapper}
       {...hoverProps}
-      {...props}
     >
       <span style={styles.srOnly} aria-hidden>
         {text}

@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect, type FC, ReactNode } from 'react';
+import { useRef, useState, useEffect, type FC } from 'react';
+import type { ReactNode } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import './MagicBentoCard.css';
 
@@ -50,7 +51,6 @@ const MagicBentoCard: FC<MagicBentoCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLElement[]>([]);
   const [isHovered, setIsHovered] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -68,9 +68,9 @@ const MagicBentoCard: FC<MagicBentoCardProps> = ({
   const smoothGlowY = useSpring(glowY, { stiffness: 200, damping: 25 });
   const smoothGlowIntensity = useSpring(glowIntensity, { stiffness: 200, damping: 25 });
 
-  const glowXPercent = useTransform(smoothGlowX, (v) => `${v}%`);
-  const glowYPercent = useTransform(smoothGlowY, (v) => `${v}%`);
-  const glowRadius = useTransform(smoothGlowIntensity, (intensity) => `${spotlightRadius * intensity}px`);
+  useTransform(smoothGlowX, (v) => `${v}%`);
+  useTransform(smoothGlowY, (v) => `${v}%`);
+  useTransform(smoothGlowIntensity, (intensity) => `${spotlightRadius * intensity}px`);
 
   // Mettre à jour les CSS variables
   useEffect(() => {
@@ -145,8 +145,6 @@ const MagicBentoCard: FC<MagicBentoCardProps> = ({
     const centerY = rect.height / 2;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-
-    setMousePosition({ x: mouseX, y: mouseY });
 
     // Glow position
     const relativeX = (mouseX / rect.width) * 100;
